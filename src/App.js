@@ -456,7 +456,7 @@ function App() {
   };
 
   const openInstagram = () => {
-    window.open('https://www.instagram.com/frontay.technology/', '_blank');
+    window.open('https://www.instagram.com/frontaytechnology/', '_blank');
   };
 
   return (
