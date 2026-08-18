@@ -989,7 +989,7 @@ function App() {
       `*Cidade:* ${formData.cidade || 'Não informada'}%0A` +
       `*Tipo de Serviço:* ${formData.servico}%0A` +
       `*Detalhes:* ${formData.mensagem || 'Sem detalhes adicionais'}`;
-    const whatsappNumber = '5547984658166';
+    const whatsappNumber = '5547988145241';
     window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
     setFormData({ nome: '', email: '', telefone: '', cidade: '', servico: '', mensagem: '' });
     setSubmitted(true);
@@ -998,19 +998,19 @@ function App() {
 
   const solicitarOrcamentoServico = (nomeServico) => {
     const whatsappMessage = `Olá Frontay Technology! Gostaria de solicitar um orçamento para o serviço de *${nomeServico}*.%0A%0APoderia me passar mais informações sobre valores, prazos e como funciona o processo de desenvolvimento?`;
-    window.open(`https://wa.me/5547984658166?text=${whatsappMessage}`, '_blank');
+    window.open(`https://wa.me/5547988145241?text=${whatsappMessage}`, '_blank');
   };
 
   const openWhatsAppHero = () => {
-    window.open(`https://wa.me/5547984658166?text=Olá Frontay Technology! Vi o site de vocês e gostaria de mais informações sobre os serviços de desenvolvimento.`, '_blank');
+    window.open(`https://wa.me/5547988145241?text=Olá Frontay Technology! Vi o site de vocês e gostaria de mais informações sobre os serviços de desenvolvimento.`, '_blank');
   };
 
   const openWhatsAppPersonalizado = () => {
-    window.open(`https://wa.me/5547984658166?text=Olá Frontay Technology! Preciso de um projeto de software personalizado. Gostaria de conversar sobre uma solução sob medida.`, '_blank');
+    window.open(`https://wa.me/5547988145241?text=Olá Frontay Technology! Preciso de um projeto de software personalizado. Gostaria de conversar sobre uma solução sob medida.`, '_blank');
   };
 
   const openWhatsAppFlutuante = () => {
-    window.open(`https://wa.me/5547984658166?text=Olá Frontay Technology! Gostaria de solicitar um orçamento.`, '_blank');
+    window.open(`https://wa.me/5547988145241?text=Olá Frontay Technology! Gostaria de solicitar um orçamento.`, '_blank');
   };
 
   const scrollToTop = () => {
@@ -1253,7 +1253,7 @@ function App() {
               <div className="success-icon">✓</div>
               <h3>Orçamento Solicitado!</h3>
               <p>Você será redirecionado para o WhatsApp em instantes.</p>
-              <a href="https://wa.me/5547984658166" target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+              <a href="https://wa.me/5547988145241" target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                 Clique aqui se não for redirecionado
               </a>
             </div>
@@ -1366,7 +1366,7 @@ function App() {
               <h3>FRONTAY</h3>
               <p>Tecnologia e inovação para transformar seu negócio.</p>
               <div className="contact-info">
-                <p>(47) 98465-8166</p>
+                <p>(47) 98814-5241</p>
                 <p>Camboriú - SC</p>
                 <p>contato@frontay.com</p>
               </div>
