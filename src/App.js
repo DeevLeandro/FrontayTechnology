@@ -17,6 +17,7 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   // Refs para animações
   const headerRef = useRef(null);
@@ -27,8 +28,16 @@ function App() {
   const contactRef = useRef(null);
   const footerRef = useRef(null);
   const serviceCardsRef = useRef([]);
-  const statItemsRef = useRef([]);
   const testimonialCardsRef = useRef([]);
+  const heroTitleRef = useRef(null);
+  const heroSubRef = useRef(null);
+  const heroTagRef = useRef(null);
+  const heroBtnsRef = useRef(null);
+  const heroOverlayRef = useRef(null);
+  const heroImageRef = useRef(null);
+  const aboutImageRef = useRef(null);
+  const aboutTextRef = useRef(null);
+  const contactFormRef = useRef(null);
 
   // Slides do carrossel
   const heroSlides = [
@@ -36,7 +45,7 @@ function App() {
       id: 1,
       title: 'Sites Institucionais',
       subtitle: 'Presença digital profissional com design exclusivo e alta performance.',
-      image: '/images/Institucional.png',
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2015&q=80',
       cta: 'Solicitar Orçamento'
     },
     {
@@ -62,49 +71,43 @@ function App() {
     }
   ];
 
-  // Serviços com imagens
+  // Serviços
   const services = [
     {
       id: 1,
       name: 'Sites Institucionais',
       description: 'Desenvolvimento de sites profissionais com design responsivo, animações elegantes e otimização SEO avançada.',
       image: 'images/Institucional.png',
-      icon: '🌐'
     },
     {
       id: 2,
       name: 'E-commerces',
       description: 'Lojas virtuais completas com gestão de produtos, carrinho inteligente e múltiplos gateways de pagamento.',
       image: '/images/Ecommerce.png',
-      icon: '🛒'
     },
     {
       id: 3,
       name: 'Landing Pages',
       description: 'Páginas de alta conversão com copywriting estratégico, formulários inteligentes e integração com CRM.',
       image: 'images/Landing.png',
-      icon: '🎯'
     },
     {
       id: 4,
       name: 'Aplicativos Mobile',
       description: 'Apps nativos e híbridos para iOS e Android com experiência fluida e notificações push.',
       image: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80',
-      icon: '📱'
     },
     {
       id: 5,
       name: 'Sistemas Web',
       description: 'Sistemas personalizados para gestão empresarial, automação de processos e dashboards interativos.',
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2015&q=80',
-      icon: '⚙️'
     },
     {
       id: 6,
       name: 'UI/UX Design',
       description: 'Design de interfaces focado na experiência do usuário, prototipagem interativa e testes de usabilidade.',
       image: 'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      icon: '🎨'
     }
   ];
 
@@ -113,255 +116,81 @@ function App() {
       id: 1,
       name: 'André Luiz',
       text: 'A Frontay desenvolveu o site institucional da minha empresa. Ficou exatamente como imaginei, com design moderno e rápido. As vendas aumentaram 40%!',
-      rating: 5,
       city: 'Camboriú',
-      avatar: '👨‍💼',
       image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80'
     },
     {
       id: 2,
       name: 'Carolina Menezes',
       text: 'Contratamos a Frontay para criar nosso e-commerce. O projeto foi entregue antes do prazo e as vendas já cresceram 150% em 3 meses.',
-      rating: 5,
       city: 'Balneário Camboriú',
-      avatar: '👩‍💼',
       image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1976&q=80'
     },
     {
       id: 3,
       name: 'Felipe Rocha',
-      text: 'Precisávamos de um aplicativo para nossa startup. A equipe entendeu perfeitamente nossa visão e entregou um produto excelente. 5 estrelas!',
-      rating: 5,
+      text: 'Precisávamos de um aplicativo para nossa startup. A equipe entendeu perfeitamente nossa visão e entregou um produto excelente.',
       city: 'Itajaí',
-      avatar: '👨‍💻',
       image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80'
     }
   ];
 
-  const whyChooseUs = [
+  const realProjects = [
     {
       id: 1,
-      title: '2+ Anos de Experiência',
-      description: 'Expertise comprovada em desenvolvimento de software',
-      icon: '🏆'
+      name: 'E-commerce Moda Express',
+      description: 'Loja virtual completa com integração de pagamentos, gestão de estoque e dashboard analítico.',
+      result: 'Aumento de 150% nas vendas em 3 meses'
     },
     {
       id: 2,
-      title: 'Tecnologias Modernas',
-      description: 'React, Node.js, Next.js, React Native, TypeScript',
-      icon: '⚡'
+      name: 'App Rápido Entregas',
+      description: 'Aplicativo de delivery com rastreamento em tempo real, otimização de rotas e notificações push.',
+      result: 'Redução de 30% no tempo médio de entrega'
     },
     {
       id: 3,
-      title: 'Projetos Personalizados',
-      description: 'Soluções sob medida para cada necessidade',
-      icon: '🎯'
+      name: 'Site Construtora Alpha',
+      description: 'Site institucional com vitrine de empreendimentos, tour virtual e sistema de captação de leads.',
+      result: 'Geração de leads aumentada em 200%'
     },
     {
       id: 4,
-      title: 'Suporte Contínuo',
-      description: 'Acompanhamento pós-lançamento e manutenção',
-      icon: '🛡️'
+      name: 'Sistema Clínica Saúde Total',
+      description: 'Sistema de agendamento online, gestão de pacientes e envio automático de lembretes.',
+      result: 'Redução de 40% nas faltas e cancelamentos'
     }
   ];
 
+  // --- Efeitos de responsividade e menu ---
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-      if (window.innerWidth >= 768) {
-        setIsMenuOpen(false);
-      }
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (!mobile) setIsMenuOpen(false);
     };
-
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Bloquear scroll quando menu mobile estiver aberto
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+    const handler = (e) => setPrefersReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
   useEffect(() => {
     if (isMenuOpen && isMobile) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-    
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
+    return () => { document.body.style.overflow = 'unset'; };
   }, [isMenuOpen, isMobile]);
 
-  // Animações GSAP
-  useEffect(() => {
-    // Header animation
-    gsap.fromTo(headerRef.current,
-      { y: -100, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.2, ease: "power4.out" }
-    );
-
-    // Hero animations
-    gsap.fromTo(".carousel-content",
-      { y: 100, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.5, delay: 0.5, ease: "power4.out" }
-    );
-
-    gsap.fromTo(".carousel-buttons .btn",
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, delay: 1, stagger: 0.2, ease: "backOut(1.7)" }
-    );
-
-    // Service cards animation
-    serviceCardsRef.current.forEach((card, index) => {
-      if (card) {
-        gsap.fromTo(card,
-          {
-            y: 100,
-            opacity: 0,
-            rotationY: 30,
-            rotationX: -10
-          },
-          {
-            scrollTrigger: {
-              trigger: card,
-              start: "top 85%",
-              end: "bottom 20%",
-              toggleActions: "play none none reverse"
-            },
-            y: 0,
-            opacity: 1,
-            rotationY: 0,
-            rotationX: 0,
-            duration: 1.2,
-            delay: index * 0.1,
-            ease: "power4.out"
-          }
-        );
-      }
-    });
-
-    // Section titles animation
-    gsap.utils.toArray('.section-title').forEach(title => {
-      gsap.fromTo(title,
-        { y: 60, opacity: 0 },
-        {
-          scrollTrigger: {
-            trigger: title,
-            start: "top 85%",
-            end: "bottom 20%",
-            toggleActions: "play none none reverse"
-          },
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power4.out"
-        }
-      );
-    });
-
-    // About section
-    gsap.fromTo(".sobre-text",
-      { x: -100, opacity: 0 },
-      {
-        scrollTrigger: {
-          trigger: aboutRef.current,
-          start: "top 70%",
-          end: "bottom 20%",
-          toggleActions: "play none none reverse"
-        },
-        x: 0,
-        opacity: 1,
-        duration: 1.2,
-        ease: "power4.out"
-      }
-    );
-
-    gsap.fromTo(".sobre-image-container",
-      { x: 100, opacity: 0, rotationY: 15 },
-      {
-        scrollTrigger: {
-          trigger: aboutRef.current,
-          start: "top 70%",
-          end: "bottom 20%",
-          toggleActions: "play none none reverse"
-        },
-        x: 0,
-        opacity: 1,
-        rotationY: 0,
-        duration: 1.2,
-        ease: "power4.out"
-      }
-    );
-
-    // Stats animation
-    statItemsRef.current.forEach((stat, index) => {
-      if (stat) {
-        gsap.fromTo(stat,
-          { scale: 0, opacity: 0, rotation: -10 },
-          {
-            scrollTrigger: {
-              trigger: stat,
-              start: "top 85%",
-              end: "bottom 20%",
-              toggleActions: "play none none reverse"
-            },
-            scale: 1,
-            opacity: 1,
-            rotation: 0,
-            duration: 0.8,
-            delay: index * 0.2,
-            ease: "backOut(1.7)"
-          }
-        );
-      }
-    });
-
-    // Testimonials animation
-    testimonialCardsRef.current.forEach((card, index) => {
-      if (card) {
-        gsap.fromTo(card,
-          { y: 80, opacity: 0, scale: 0.9, rotationY: 20 },
-          {
-            scrollTrigger: {
-              trigger: card,
-              start: "top 85%",
-              end: "bottom 20%",
-              toggleActions: "play none none reverse"
-            },
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            rotationY: 0,
-            duration: 0.8,
-            delay: index * 0.15,
-            ease: "power4.out"
-          }
-        );
-      }
-    });
-
-    // Form animation
-    gsap.fromTo(".contact-form-container",
-      { y: 80, opacity: 0, scale: 0.95 },
-      {
-        scrollTrigger: {
-          trigger: contactRef.current,
-          start: "top 75%",
-          end: "bottom 20%",
-          toggleActions: "play none none reverse"
-        },
-        y: 0,
-        opacity: 1,
-        scale: 1,
-        duration: 1.2,
-        ease: "power4.out"
-      }
-    );
-
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, []);
-
-  // Carrossel automático
+  // --- Carrossel automático ---
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
@@ -369,6 +198,767 @@ function App() {
     return () => clearInterval(timer);
   }, [heroSlides.length]);
 
+  // --- ANIMAÇÕES GSAP COMPLETAS (RESTAURADAS) ---
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      // ============================================================
+      // 1. HEADER - interação com scroll
+      // ============================================================
+      const header = headerRef.current;
+      if (header) {
+        gsap.set(header, { 
+          backgroundColor: 'rgba(10, 15, 28, 0)',
+          backdropFilter: 'blur(0px)',
+          borderBottom: '1px solid rgba(72, 169, 197, 0)',
+          padding: '15px 0'
+        });
+
+        const headerTL = gsap.timeline({
+          scrollTrigger: {
+            trigger: 'body',
+            start: 'top top',
+            end: '+=200',
+            scrub: 1,
+          }
+        });
+        headerTL
+          .to(header, {
+            backgroundColor: 'rgba(10, 15, 28, 0.95)',
+            backdropFilter: 'blur(12px)',
+            borderBottom: '1px solid rgba(72, 169, 197, 0.2)',
+            padding: '10px 0',
+            duration: 1,
+            ease: 'power1.inOut'
+          });
+
+        let lastScrollY = window.scrollY;
+        let headerHidden = false;
+        const handleScroll = () => {
+          const currentScrollY = window.scrollY;
+          if (currentScrollY > 200) {
+            if (currentScrollY > lastScrollY && !headerHidden) {
+              headerHidden = true;
+              gsap.to(header, { y: -100, opacity: 0, duration: 0.4, ease: 'power2.out' });
+            } else if (currentScrollY < lastScrollY && headerHidden) {
+              headerHidden = false;
+              gsap.to(header, { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out' });
+            }
+          } else {
+            if (headerHidden) {
+              headerHidden = false;
+              gsap.to(header, { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out' });
+            }
+          }
+          lastScrollY = currentScrollY;
+        };
+        window.addEventListener('scroll', handleScroll);
+        window._headerScrollCleanup = () => window.removeEventListener('scroll', handleScroll);
+      }
+
+      // ============================================================
+      // 2. HERO - entrada em camadas com parallax
+      // ============================================================
+      const hero = heroRef.current;
+      if (hero) {
+        const heroTag = heroTagRef.current;
+        const heroTitle = heroTitleRef.current;
+        const heroSub = heroSubRef.current;
+        const heroBtns = heroBtnsRef.current;
+        const heroOverlay = heroOverlayRef.current;
+        const heroImage = heroImageRef.current;
+
+        gsap.set(heroTag, { y: 80, opacity: 0, scale: 0.8 });
+        gsap.set(heroTitle, { y: 100, opacity: 0, scale: 0.9 });
+        gsap.set(heroSub, { y: 60, opacity: 0 });
+        gsap.set(heroBtns, { y: 50, opacity: 0 });
+        gsap.set(heroOverlay, { opacity: 0.7 });
+        if (heroImage) gsap.set(heroImage, { scale: 1.15 });
+
+        const entryTL = gsap.timeline({ defaults: { ease: 'power4.out' } });
+        entryTL
+          .to(heroTag, { y: 0, opacity: 1, scale: 1, duration: 1.2, delay: 0.3 })
+          .to(heroTitle, { y: 0, opacity: 1, scale: 1, duration: 1.4, delay: 0.2 }, '-=0.6')
+          .to(heroSub, { y: 0, opacity: 1, duration: 1.2, delay: 0.1 }, '-=0.8')
+          .to(heroBtns, { y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: 'backOut(1.7)' }, '-=0.6');
+
+        if (!isMobile) {
+          // Parallax no overlay e imagem
+          ScrollTrigger.create({
+            trigger: hero,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5,
+            onUpdate: (self) => {
+              const progress = self.progress;
+              if (heroOverlay) {
+                gsap.to(heroOverlay, { 
+                  opacity: 0.7 - progress * 0.3,
+                  duration: 0.1,
+                  overwrite: 'auto'
+                });
+              }
+              if (heroImage) {
+                const scale = 1.15 - progress * 0.2;
+                gsap.to(heroImage, { 
+                  scale: Math.max(1, scale),
+                  duration: 0.1,
+                  overwrite: 'auto'
+                });
+              }
+            }
+          });
+
+          gsap.to(heroTitle, {
+            y: -80,
+            scale: 0.95,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: hero,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.5,
+            }
+          });
+          gsap.to(heroSub, {
+            y: -60,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: hero,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.5,
+            }
+          });
+          gsap.to(heroTag, {
+            y: -40,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: hero,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.5,
+            }
+          });
+
+          // Transição hero → serviços com clip-path
+          const heroContainer = hero.querySelector('.carousel-container');
+          if (heroContainer) {
+            gsap.to(heroContainer, {
+              clipPath: 'inset(0% 0% 100% 0%)',
+              ease: 'power2.inOut',
+              scrollTrigger: {
+                trigger: servicesRef.current,
+                start: 'top bottom',
+                end: 'top top',
+                scrub: 1.5,
+                pin: hero,
+                pinSpacing: true,
+              }
+            });
+            gsap.to(hero, {
+              scale: 0.92,
+              opacity: 0.3,
+              ease: 'power2.inOut',
+              scrollTrigger: {
+                trigger: servicesRef.current,
+                start: 'top bottom',
+                end: 'top top',
+                scrub: 1.5,
+              }
+            });
+          }
+        }
+      }
+
+      // ============================================================
+      // 3. SERVIÇOS - entrada cinematográfica com stagger e parallax
+      // ============================================================
+      const servicesSection = servicesRef.current;
+      if (servicesSection) {
+        const cards = serviceCardsRef.current.filter(el => el);
+        const sectionTitle = servicesSection.querySelector('.section-title');
+        const sectionBadge = servicesSection.querySelector('.section-badge');
+        const sectionSub = servicesSection.querySelector('.section-subtitle');
+
+        gsap.set(sectionBadge, { opacity: 0, y: 40 });
+        gsap.set(sectionTitle, { opacity: 0, y: 60 });
+        gsap.set(sectionSub, { opacity: 0, y: 40 });
+        cards.forEach((card) => {
+          gsap.set(card, { 
+            opacity: 0, 
+            y: 100, 
+            scale: 0.95,
+            rotationX: 5,
+            clipPath: 'inset(0% 0% 100% 0%)'
+          });
+        });
+
+        // Título dividido em palavras
+        if (sectionTitle) {
+          const words = sectionTitle.textContent.split(' ');
+          sectionTitle.innerHTML = words.map(word => 
+            `<span class="word" style="display:inline-block;overflow:hidden;vertical-align:top;">${word}</span>`
+          ).join(' ');
+          const wordEls = sectionTitle.querySelectorAll('.word');
+          gsap.set(wordEls, { y: '100%', opacity: 0 });
+          gsap.to(wordEls, {
+            y: '0%',
+            opacity: 1,
+            duration: 1,
+            stagger: 0.08,
+            ease: 'power4.out',
+            scrollTrigger: {
+              trigger: servicesSection,
+              start: 'top 85%',
+              end: 'top 40%',
+              scrub: 1.2,
+              toggleActions: 'play none none reverse'
+            }
+          });
+        }
+
+        gsap.to(sectionBadge, {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: servicesSection,
+            start: 'top 85%',
+            end: 'top 50%',
+            scrub: 1,
+            toggleActions: 'play none none reverse'
+          }
+        });
+        gsap.to(sectionSub, {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: servicesSection,
+            start: 'top 80%',
+            end: 'top 45%',
+            scrub: 1,
+            toggleActions: 'play none none reverse'
+          }
+        });
+
+        cards.forEach((card, index) => {
+          const speed = 0.1 + index * 0.05;
+          gsap.to(card, {
+            y: (i) => -60 + (i % 3) * 20,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: servicesSection,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.5,
+            }
+          });
+
+          gsap.to(card, {
+            clipPath: 'inset(0% 0% 0% 0%)',
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            rotationX: 0,
+            duration: 1.2,
+            delay: index * 0.15,
+            ease: 'power4.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 90%',
+              end: 'top 60%',
+              scrub: 1.2,
+              toggleActions: 'play none none reverse'
+            }
+          });
+
+          const img = card.querySelector('.service-image img');
+          if (img) {
+            gsap.to(img, {
+              yPercent: -15,
+              scale: 1.1,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1.5,
+              }
+            });
+          }
+        });
+
+        // Transição serviços → sobre (imagem com máscara)
+        const aboutSection = aboutRef.current;
+        if (aboutSection) {
+          const aboutImgContainer = aboutSection.querySelector('.sobre-image-wrapper');
+          const aboutImg = aboutImgContainer?.querySelector('img');
+          if (aboutImgContainer) {
+            gsap.set(aboutImgContainer, { clipPath: 'inset(0% 0% 0% 100%)' });
+            gsap.to(aboutImgContainer, {
+              clipPath: 'inset(0% 0% 0% 0%)',
+              duration: 1.5,
+              ease: 'power4.out',
+              scrollTrigger: {
+                trigger: aboutSection,
+                start: 'top 80%',
+                end: 'top 30%',
+                scrub: 1.5,
+                toggleActions: 'play none none reverse'
+              }
+            });
+            if (aboutImg) {
+              gsap.to(aboutImg, {
+                yPercent: -10,
+                scale: 1.08,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: aboutSection,
+                  start: 'top bottom',
+                  end: 'bottom top',
+                  scrub: 1.5,
+                }
+              });
+            }
+          }
+        }
+      }
+
+      // ============================================================
+      // 4. SOBRE - texto progressivo, projetos reais e parallax
+      // ============================================================
+      const aboutSection = aboutRef.current;
+      if (aboutSection) {
+        const textBlocks = aboutSection.querySelectorAll('.sobre-text p, .sobre-highlight');
+        const features = aboutSection.querySelectorAll('.feature-item');
+        const projectItems = aboutSection.querySelectorAll('.projeto-item');
+
+        // Texto com stagger
+        gsap.set(textBlocks, { opacity: 0, y: 40 });
+        gsap.to(textBlocks, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.2,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: aboutSection,
+            start: 'top 75%',
+            end: 'top 30%',
+            scrub: 1.2,
+            toggleActions: 'play none none reverse'
+          }
+        });
+
+        // Features
+        gsap.set(features, { opacity: 0, x: -30 });
+        gsap.to(features, {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: aboutSection,
+            start: 'top 70%',
+            end: 'top 30%',
+            scrub: 1.2,
+            toggleActions: 'play none none reverse'
+          }
+        });
+
+        // Projetos reais com stagger e efeito de destaque
+        gsap.set(projectItems, { opacity: 0, y: 40, scale: 0.95 });
+        gsap.to(projectItems, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.9,
+          stagger: 0.15,
+          ease: 'backOut(1.4)',
+          scrollTrigger: {
+            trigger: aboutSection,
+            start: 'top 65%',
+            end: 'top 20%',
+            scrub: 1.2,
+            toggleActions: 'play none none reverse'
+          }
+        });
+      }
+
+      // ============================================================
+      // 5. DEPOIMENTOS - apresentação editorial com stagger e parallax
+      // ============================================================
+      const testimonialsSection = testimonialsRef.current;
+      if (testimonialsSection) {
+        const cards = testimonialCardsRef.current.filter(el => el);
+        const sectionTitle = testimonialsSection.querySelector('.section-title');
+        const sectionBadge = testimonialsSection.querySelector('.section-badge');
+
+        if (sectionTitle) {
+          const words = sectionTitle.textContent.split(' ');
+          sectionTitle.innerHTML = words.map(word => 
+            `<span class="word" style="display:inline-block;overflow:hidden;vertical-align:top;">${word}</span>`
+          ).join(' ');
+          const wordEls = sectionTitle.querySelectorAll('.word');
+          gsap.set(wordEls, { y: '100%', opacity: 0 });
+          gsap.to(wordEls, {
+            y: '0%',
+            opacity: 1,
+            duration: 1,
+            stagger: 0.06,
+            ease: 'power4.out',
+            scrollTrigger: {
+              trigger: testimonialsSection,
+              start: 'top 85%',
+              end: 'top 40%',
+              scrub: 1.2,
+              toggleActions: 'play none none reverse'
+            }
+          });
+        }
+
+        gsap.to(sectionBadge, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: testimonialsSection,
+            start: 'top 85%',
+            end: 'top 50%',
+            scrub: 1,
+            toggleActions: 'play none none reverse'
+          }
+        });
+
+        cards.forEach((card, index) => {
+          gsap.set(card, { opacity: 0, y: 80, scale: 0.9, rotationY: 10 });
+          gsap.to(card, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            rotationY: 0,
+            duration: 1,
+            delay: index * 0.15,
+            ease: 'power4.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 85%',
+              end: 'top 40%',
+              scrub: 1.2,
+              toggleActions: 'play none none reverse'
+            }
+          });
+
+          const img = card.querySelector('img');
+          if (img) {
+            gsap.to(img, {
+              yPercent: -8,
+              scale: 1.05,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1.5,
+              }
+            });
+          }
+        });
+      }
+
+      // ============================================================
+      // 6. CONTATO - entrada forte com campos progressivos
+      // ============================================================
+      const contactSection = contactRef.current;
+      if (contactSection) {
+        const formContainer = contactSection.querySelector('.contact-form-container');
+        const form = contactSection.querySelector('.contact-form');
+        const title = contactSection.querySelector('.section-title');
+        const badge = contactSection.querySelector('.section-badge');
+        const subtitle = contactSection.querySelector('.section-subtitle');
+        const formGroups = form?.querySelectorAll('.form-group');
+        const submitBtn = form?.querySelector('.btn-submit');
+
+        if (title) {
+          const words = title.textContent.split(' ');
+          title.innerHTML = words.map(word => 
+            `<span class="word" style="display:inline-block;overflow:hidden;vertical-align:top;">${word}</span>`
+          ).join(' ');
+          const wordEls = title.querySelectorAll('.word');
+          gsap.set(wordEls, { y: '100%', opacity: 0 });
+          gsap.to(wordEls, {
+            y: '0%',
+            opacity: 1,
+            duration: 1,
+            stagger: 0.08,
+            ease: 'power4.out',
+            scrollTrigger: {
+              trigger: contactSection,
+              start: 'top 85%',
+              end: 'top 40%',
+              scrub: 1.2,
+              toggleActions: 'play none none reverse'
+            }
+          });
+        }
+
+        gsap.to(badge, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: contactSection,
+            start: 'top 85%',
+            end: 'top 50%',
+            scrub: 1,
+            toggleActions: 'play none none reverse'
+          }
+        });
+        gsap.to(subtitle, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: contactSection,
+            start: 'top 80%',
+            end: 'top 45%',
+            scrub: 1,
+            toggleActions: 'play none none reverse'
+          }
+        });
+
+        if (formContainer) {
+          gsap.set(formContainer, { opacity: 0, y: 60, scale: 0.96 });
+          gsap.to(formContainer, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 1.2,
+            ease: 'power4.out',
+            scrollTrigger: {
+              trigger: contactSection,
+              start: 'top 70%',
+              end: 'top 30%',
+              scrub: 1.5,
+              toggleActions: 'play none none reverse'
+            }
+          });
+        }
+
+        if (formGroups) {
+          gsap.set(formGroups, { opacity: 0, y: 30 });
+          gsap.to(formGroups, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: 'power4.out',
+            scrollTrigger: {
+              trigger: contactSection,
+              start: 'top 65%',
+              end: 'top 25%',
+              scrub: 1.2,
+              toggleActions: 'play none none reverse'
+            }
+          });
+        }
+
+        if (submitBtn) {
+          gsap.to(submitBtn, {
+            scale: 1.02,
+            boxShadow: '0 15px 40px rgba(72, 169, 197, 0.5)',
+            duration: 0.3,
+            yoyo: true,
+            repeat: -1,
+            repeatDelay: 3,
+            ease: 'power1.inOut'
+          });
+        }
+      }
+
+      // ============================================================
+      // 7. FOOTER - encerramento com movimento sutil
+      // ============================================================
+      const footer = footerRef.current;
+      if (footer) {
+        gsap.set(footer, { y: 60, opacity: 0 });
+        gsap.to(footer, {
+          y: 0,
+          opacity: 1,
+          duration: 1.5,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 90%',
+            end: 'top 40%',
+            scrub: 1.5,
+            toggleActions: 'play none none reverse'
+          }
+        });
+
+        const footerLogo = footer.querySelector('.footer-info h3');
+        if (footerLogo) {
+          gsap.to(footerLogo, {
+            x: 15,
+            duration: 2,
+            yoyo: true,
+            repeat: -1,
+            ease: 'sine.inOut'
+          });
+        }
+
+        const links = footer.querySelectorAll('.footer-links a');
+        gsap.set(links, { opacity: 0, x: -20 });
+        gsap.to(links, {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 80%',
+            end: 'top 30%',
+            scrub: 1.2,
+            toggleActions: 'play none none reverse'
+          }
+        });
+      }
+
+      // ============================================================
+      // 8. PARALLAX GERAL - elementos com classes .parallax-*
+      // ============================================================
+      const parallaxElements = document.querySelectorAll('.parallax-slow, .parallax-medium, .parallax-fast');
+      parallaxElements.forEach(el => {
+        let speed = 0;
+        if (el.classList.contains('parallax-slow')) speed = -8;
+        else if (el.classList.contains('parallax-medium')) speed = -15;
+        else if (el.classList.contains('parallax-fast')) speed = -25;
+        
+        if (speed !== 0 && !isMobile) {
+          gsap.to(el, {
+            yPercent: speed,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.5,
+            }
+          });
+        }
+      });
+
+      // ============================================================
+      // 9. CURSOR PERSONALIZADO (desktop)
+      // ============================================================
+      if (!isMobile && !prefersReducedMotion) {
+        const cursor = document.createElement('div');
+        cursor.className = 'custom-cursor';
+        cursor.style.cssText = `
+          position: fixed;
+          pointer-events: none;
+          z-index: 9999;
+          width: 20px;
+          height: 20px;
+          border: 2px solid #48A9C5;
+          border-radius: 50%;
+          transform: translate(-50%, -50%);
+          transition: width 0.2s, height 0.2s, background 0.2s, border-color 0.2s;
+          mix-blend-mode: difference;
+          will-change: transform;
+        `;
+        document.body.appendChild(cursor);
+
+        const cursorDot = document.createElement('div');
+        cursorDot.className = 'custom-cursor-dot';
+        cursorDot.style.cssText = `
+          position: fixed;
+          pointer-events: none;
+          z-index: 9999;
+          width: 6px;
+          height: 6px;
+          background: #48A9C5;
+          border-radius: 50%;
+          transform: translate(-50%, -50%);
+          transition: width 0.15s, height 0.15s;
+          will-change: transform;
+        `;
+        document.body.appendChild(cursorDot);
+
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        let dotX = 0, dotY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+        });
+
+        const animateCursor = () => {
+          cursorX += (mouseX - cursorX) * 0.12;
+          cursorY += (mouseY - cursorY) * 0.12;
+          dotX += (mouseX - dotX) * 0.25;
+          dotY += (mouseY - dotY) * 0.25;
+
+          cursor.style.transform = `translate(${cursorX - 10}px, ${cursorY - 10}px)`;
+          cursorDot.style.transform = `translate(${dotX - 3}px, ${dotY - 3}px)`;
+
+          requestAnimationFrame(animateCursor);
+        };
+        animateCursor();
+
+        const interactiveElements = document.querySelectorAll('a, button, .btn, .social-btn, .service-card, .testimonial-card');
+        interactiveElements.forEach(el => {
+          el.addEventListener('mouseenter', () => {
+            cursor.style.width = '40px';
+            cursor.style.height = '40px';
+            cursor.style.borderColor = '#0077BE';
+            cursor.style.background = 'rgba(72, 169, 197, 0.15)';
+            cursorDot.style.width = '10px';
+            cursorDot.style.height = '10px';
+          });
+          el.addEventListener('mouseleave', () => {
+            cursor.style.width = '20px';
+            cursor.style.height = '20px';
+            cursor.style.borderColor = '#48A9C5';
+            cursor.style.background = 'transparent';
+            cursorDot.style.width = '6px';
+            cursorDot.style.height = '6px';
+          });
+        });
+
+        if ('ontouchstart' in window) {
+          cursor.style.display = 'none';
+          cursorDot.style.display = 'none';
+        }
+
+        window._cursorCleanup = () => {
+          if (cursor.parentNode) cursor.parentNode.removeChild(cursor);
+          if (cursorDot.parentNode) cursorDot.parentNode.removeChild(cursorDot);
+        };
+      }
+
+    }, { scope: document });
+
+    return () => {
+      ctx.revert();
+      if (window._headerScrollCleanup) window._headerScrollCleanup();
+      if (window._cursorCleanup) window._cursorCleanup();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, [isMobile, prefersReducedMotion]);
+
+  // --- Funções de navegação e WhatsApp ---
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   };
@@ -382,21 +972,16 @@ function App() {
   };
 
   const handleNavClick = (e) => {
-    // Fecha o menu mobile
     setIsMenuOpen(false);
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
     const whatsappMessage = `Olá Frontay Technology! Gostaria de solicitar um orçamento para desenvolvimento de software.%0A%0A` +
       `*Nome:* ${formData.nome}%0A` +
       `*E-mail:* ${formData.email}%0A` +
@@ -404,54 +989,32 @@ function App() {
       `*Cidade:* ${formData.cidade || 'Não informada'}%0A` +
       `*Tipo de Serviço:* ${formData.servico}%0A` +
       `*Detalhes:* ${formData.mensagem || 'Sem detalhes adicionais'}`;
-    
     const whatsappNumber = '5547984658166';
     window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
-    
-    setFormData({
-      nome: '',
-      email: '',
-      telefone: '',
-      cidade: '',
-      servico: '',
-      mensagem: ''
-    });
-    
+    setFormData({ nome: '', email: '', telefone: '', cidade: '', servico: '', mensagem: '' });
     setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-    }, 5000);
+    setTimeout(() => setSubmitted(false), 5000);
   };
 
   const solicitarOrcamentoServico = (nomeServico) => {
     const whatsappMessage = `Olá Frontay Technology! Gostaria de solicitar um orçamento para o serviço de *${nomeServico}*.%0A%0APoderia me passar mais informações sobre valores, prazos e como funciona o processo de desenvolvimento?`;
-    const whatsappNumber = '5547984658166';
-    window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
+    window.open(`https://wa.me/5547984658166?text=${whatsappMessage}`, '_blank');
   };
 
   const openWhatsAppHero = () => {
-    const whatsappMessage = `Olá Frontay Technology! Vi o site de vocês e gostaria de mais informações sobre os serviços de desenvolvimento.`;
-    const whatsappNumber = '5547984658166';
-    window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
+    window.open(`https://wa.me/5547984658166?text=Olá Frontay Technology! Vi o site de vocês e gostaria de mais informações sobre os serviços de desenvolvimento.`, '_blank');
   };
 
   const openWhatsAppPersonalizado = () => {
-    const whatsappMessage = `Olá Frontay Technology! Preciso de um projeto de software personalizado. Gostaria de conversar sobre uma solução sob medida.`;
-    const whatsappNumber = '5547984658166';
-    window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
+    window.open(`https://wa.me/5547984658166?text=Olá Frontay Technology! Preciso de um projeto de software personalizado. Gostaria de conversar sobre uma solução sob medida.`, '_blank');
   };
 
   const openWhatsAppFlutuante = () => {
-    const whatsappMessage = `Olá Frontay Technology! Gostaria de solicitar um orçamento.`;
-    const whatsappNumber = '5547984658166';
-    window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
+    window.open(`https://wa.me/5547984658166?text=Olá Frontay Technology! Gostaria de solicitar um orçamento.`, '_blank');
   };
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     handleNavClick();
   };
 
@@ -459,6 +1022,7 @@ function App() {
     window.open('https://www.instagram.com/frontaytechnology/', '_blank');
   };
 
+  // --- Render ---
   return (
     <div className="App">
       {/* Header */}
@@ -490,7 +1054,6 @@ function App() {
         </div>
       </header>
 
-      {/* Overlay para fechar menu mobile */}
       {isMenuOpen && isMobile && (
         <div className="menu-overlay" onClick={() => setIsMenuOpen(false)}></div>
       )}
@@ -502,17 +1065,14 @@ function App() {
             <div
               key={slide.id}
               className={`carousel-slide ${index === currentSlide ? 'active' : ''}`}
-              style={{ 
-                backgroundImage: `url(${slide.image})`,
-              }}
+              style={{ backgroundImage: `url(${slide.image})` }}
             >
-              <div className="carousel-overlay"></div>
+              <div className="carousel-overlay" ref={index === currentSlide ? heroOverlayRef : null}></div>
               <div className="container">
                 <div className="carousel-content">
-                  <span className="hero-tag">Frontay Technology</span>
-                  <h1 className="carousel-title">{slide.title}</h1>
-                  <p className="carousel-subtitle">{slide.subtitle}</p>
-                  <div className="carousel-buttons">
+                  <h1 className="carousel-title" ref={heroTitleRef}>{slide.title}</h1>
+                  <p className="carousel-subtitle" ref={heroSubRef}>{slide.subtitle}</p>
+                  <div className="carousel-buttons" ref={heroBtnsRef}>
                     <a href="#contato" className="btn btn-primary" onClick={handleNavClick}>
                       Solicitar Orçamento
                     </a>
@@ -566,9 +1126,8 @@ function App() {
                 ref={el => serviceCardsRef.current[index] = el}
               >
                 <div className="service-image">
-                  <img src={service.image} alt={service.name} />
+                  <img src={service.image} alt={service.name} loading="lazy" />
                   <div className="service-overlay">
-                    <div className="service-icon-large">{service.icon}</div>
                     <button 
                       className="btn-service-quick"
                       onClick={() => solicitarOrcamentoServico(service.name)}
@@ -578,7 +1137,6 @@ function App() {
                   </div>
                 </div>
                 <div className="service-info">
-                  <div className="service-icon-small">{service.icon}</div>
                   <h3>{service.name}</h3>
                   <p>{service.description}</p>
                   <div className="service-features">
@@ -613,7 +1171,7 @@ function App() {
           </div>
           
           <div className="sobre-content">
-            <div className="sobre-text">
+            <div className="sobre-text" ref={aboutTextRef}>
               <p className="sobre-highlight">
                 <strong>Frontay Technology</strong> é uma empresa de desenvolvimento de software localizada em <strong>Camboriú - SC</strong>.
               </p>
@@ -621,42 +1179,29 @@ function App() {
                 Combinamos <strong>tecnologia de ponta</strong> com <strong>design estratégico</strong> para criar experiências digitais que conectam marcas ao futuro. Nossa missão é transformar ideias em produtos digitais de alto impacto.
               </p>
               
-              <div className="features-grid">
-                {whyChooseUs.map(item => (
-                  <div key={item.id} className="feature-item">
-                    <div className="feature-icon">{item.icon}</div>
-                    <div className="feature-content">
-                      <h4>{item.title}</h4>
-                      <p>{item.description}</p>
+              {/* Projetos reais */}
+              <div className="projetos-reais">
+                <h4>Projetos que Entregamos com Sucesso</h4>
+                <div className="projetos-grid">
+                  {realProjects.map((project) => (
+                    <div key={project.id} className="projeto-item">
+                      <h5>{project.name}</h5>
+                      <p>{project.description}</p>
+                      <span className="projeto-resultado">{project.result}</span>
                     </div>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="sobre-stats">
-                <div className="stat-item" ref={el => statItemsRef.current[0] = el}>
-                  <span className="stat-number">2+</span>
-                  <span className="stat-label">Anos</span>
-                </div>
-                <div className="stat-item" ref={el => statItemsRef.current[1] = el}>
-                  <span className="stat-number">50+</span>
-                  <span className="stat-label">Projetos</span>
-                </div>
-                <div className="stat-item" ref={el => statItemsRef.current[2] = el}>
-                  <span className="stat-number">99%</span>
-                  <span className="stat-label">Satisfação</span>
+                  ))}
                 </div>
               </div>
             </div>
             
             <div className="sobre-image-container">
-              <div className="sobre-image-wrapper">
+              <div className="sobre-image-wrapper" ref={aboutImageRef}>
                 <img 
                   src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
                   alt="Equipe Frontay Technology" 
+                  loading="lazy"
                 />
                 <div className="image-badge">
-                  <span>📍</span>
                   <p>Camboriú - SC</p>
                 </div>
               </div>
@@ -681,14 +1226,11 @@ function App() {
                 ref={el => testimonialCardsRef.current[index] = el}
               >
                 <div className="testimonial-header">
-                  <img src={testimonial.image} alt={testimonial.name} />
+                  <img src={testimonial.image} alt={testimonial.name} loading="lazy" />
                   <div className="testimonial-info">
                     <h4>{testimonial.name}</h4>
                     <span>{testimonial.city}</span>
                   </div>
-                </div>
-                <div className="testimonial-rating">
-                  {'★'.repeat(testimonial.rating)}
                 </div>
                 <p className="testimonial-text">"{testimonial.text}"</p>
               </div>
@@ -716,7 +1258,7 @@ function App() {
               </a>
             </div>
           ) : (
-            <div className="contact-form-container">
+            <div className="contact-form-container" ref={contactFormRef}>
               <form className="contact-form" onSubmit={handleSubmit}>
                 <div className="form-row">
                   <div className="form-group">
@@ -804,7 +1346,7 @@ function App() {
                 </div>
                 
                 <button type="submit" className="btn btn-primary btn-submit">
-                  Solicitar orçamento via WhatsApp
+                  Solicitar orçamento
                 </button>
                 
                 <p className="form-note">
@@ -824,9 +1366,9 @@ function App() {
               <h3>FRONTAY</h3>
               <p>Tecnologia e inovação para transformar seu negócio.</p>
               <div className="contact-info">
-                <p><span>📱</span> (47) 98465-8166</p>
-                <p><span>📍</span> Camboriú - SC</p>
-                <p><span>📧</span> contato@frontay.com</p>
+                <p>(47) 98465-8166</p>
+                <p>Camboriú - SC</p>
+                <p>contato@frontay.com</p>
               </div>
             </div>
             
@@ -844,10 +1386,15 @@ function App() {
               <p>Acompanhe nossos projetos</p>
               <div className="social-icons">
                 <button className="social-btn" onClick={openInstagram}>
-                  <span>📸</span> Instagram
+                  Instagram
                 </button>
                 <button className="social-btn whatsapp-btn" onClick={openWhatsAppFlutuante}>
-                  <span>💬</span> WhatsApp
+                  <span>
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                  </span>
+                  WhatsApp
                 </button>
               </div>
             </div>
@@ -855,7 +1402,7 @@ function App() {
           
           <div className="footer-bottom">
             <p>© {new Date().getFullYear()} Frontay Technology. Todos os direitos reservados.</p>
-            <p>Desenvolvido com 💙 em Camboriú - SC</p>
+            <p>Desenvolvido em Camboriú - SC</p>
           </div>
         </div>
       </footer>
@@ -863,7 +1410,9 @@ function App() {
       {/* Botão flutuante WhatsApp */}
       <div className="floating-whatsapp">
         <button onClick={openWhatsAppFlutuante} aria-label="WhatsApp">
-          💬
+          <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+          </svg>
         </button>
       </div>
     </div>
